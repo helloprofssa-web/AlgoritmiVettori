@@ -5,9 +5,32 @@ import BubbleSortPage from "./pages/BubbleSortPage";
 import BubbleSortWhilePage from "./pages/BubbleSortWhilePage";
 import BinarySearchPage from "./pages/BinarySearchPage";
 import BinarySearchRecursivePage from "./pages/BinarySearchRecursivePage";
+import LinearSearchWhilePage from "./pages/LinearSearchWhilePage";
+import LinearSearchForPage from "./pages/LinearSearchForPage";
+import OrderedLinearSearchPage from "./pages/OrderedLinearSearchPage";
 
 export default function App() {
   const [page, setPage] = useState("home");
+
+  if (page === "ricerca-lineare-while") {
+    return <LinearSearchWhilePage onBack={() => setPage("home")} />;
+  }
+
+  if (page === "ricerca-lineare-for") {
+    return <LinearSearchForPage onBack={() => setPage("home")} />;
+  }
+
+  if (page === "ricerca-ordinata-semplice") {
+    return <OrderedLinearSearchPage onBack={() => setPage("home")} />;
+  }
+
+  if (page === "ricerca-binaria") {
+    return <BinarySearchPage onBack={() => setPage("home")} />;
+  }
+
+  if (page === "ricerca-binaria-ricorsiva") {
+    return <BinarySearchRecursivePage onBack={() => setPage("home")} />;
+  }
 
   if (page === "ordinamento-ingenuo") {
     return <NaiveSortPage onBack={() => setPage("home")} />;
@@ -19,14 +42,6 @@ export default function App() {
 
   if (page === "bubble-sort-while") {
     return <BubbleSortWhilePage onBack={() => setPage("home")} />;
-  }
-
-  if (page === "ricerca-binaria") {
-    return <BinarySearchPage onBack={() => setPage("home")} />;
-  }
-
-  if (page === "ricerca-binaria-ricorsiva") {
-    return <BinarySearchRecursivePage onBack={() => setPage("home")} />;
   }
 
   return <HomePage onNavigate={setPage} />;
