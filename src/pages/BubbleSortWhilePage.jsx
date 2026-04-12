@@ -3,9 +3,13 @@ import { Play, Pause, RotateCcw, SkipForward, ArrowUpDown, ArrowLeft } from "luc
 import { Card, CardHeader, CardTitle, CardContent, Button, Input, Badge } from "../components/ui";
 import CodeSidebar from "../components/CodeSidebar";
 import Footer from "../components/Footer";
-import { cppLinesNaiveSort, naiveSortSteps, parseVector } from "../algorithms/naiveSort";
+import { parseVector } from "../algorithms/naiveSort";
+import {
+  cppLinesBubbleSortWhile,
+  bubbleSortWhileSteps,
+} from "../algorithms/bubbleSortWhile";
 
-export default function NaiveSortPage({ onBack }) {
+export default function BubbleSortWhilePage({ onBack }) {
   const [inputText, setInputText] = useState("7, 3, 9, 2, 5");
   const [baseArray, setBaseArray] = useState([7, 3, 9, 2, 5]);
   const [stepIndex, setStepIndex] = useState(0);
@@ -15,7 +19,7 @@ export default function NaiveSortPage({ onBack }) {
   const timerRef = useRef(null);
   const descRef = useRef(null);
 
-  const steps = useMemo(() => naiveSortSteps(baseArray), [baseArray]);
+  const steps = useMemo(() => bubbleSortWhileSteps(baseArray), [baseArray]);
   const currentStep = steps[Math.min(stepIndex, steps.length - 1)];
   const visibleDescriptions = steps.slice(0, stepIndex + 1).map((step) => step.description);
 
@@ -41,8 +45,8 @@ export default function NaiveSortPage({ onBack }) {
     }
   }, [stepIndex]);
 
-  const comparisonsCount = steps.slice(0, stepIndex + 1).filter((s) => s.activeLine === 3).length;
-  const swapsCount = steps.slice(0, stepIndex + 1).filter((s) => s.activeLine === 6).length;
+  const comparisonsCount = steps.slice(0, stepIndex + 1).filter((s) => s.activeLine === 8).length;
+  const swapsCount = steps.slice(0, stepIndex + 1).filter((s) => s.activeLine === 11).length;
 
   const startSimulation = () => {
     const parsed = parseVector(inputText);
@@ -79,13 +83,13 @@ export default function NaiveSortPage({ onBack }) {
   return (
     <div className="h-screen flex">
       <div className="w-[360px] border-r border-slate-200">
-        <CodeSidebar lines={cppLinesNaiveSort} activeLine={currentStep.activeLine} />
+        <CodeSidebar lines={cppLinesBubbleSortWhile} activeLine={currentStep.activeLine} />
       </div>
 
       <div className="flex-1 overflow-y-auto bg-slate-50 p-6">
         <div className="max-w-6xl mx-auto space-y-6">
           <div className="flex items-center justify-between gap-4">
-            <h1 className="text-3xl font-bold">Ordinamento ingenuo</h1>
+            <h1 className="text-3xl font-bold">Bubble sort con while</h1>
 
             <Button variant="outline" onClick={onBack}>
               <ArrowLeft className="mr-2 h-4 w-4" />
@@ -153,7 +157,8 @@ export default function NaiveSortPage({ onBack }) {
                 <div className="flex gap-2 flex-wrap">
                   {currentStep.array.map((v, i) => {
                     const isI = i === currentStep.i;
-                    const isJ = i === currentStep.j;
+                    const isI1 = i === currentStep.i + 1;
+                    const inSup = currentStep.sup !== null && i < currentStep.sup;
 
                     return (
                       <div
@@ -161,9 +166,11 @@ export default function NaiveSortPage({ onBack }) {
                         className={`w-14 h-14 flex items-center justify-center border rounded font-bold ${
                           isI
                             ? "bg-purple-200 border-purple-500"
-                            : isJ
+                            : isI1
                             ? "bg-pink-200 border-pink-500"
-                            : "bg-white"
+                            : inSup
+                            ? "bg-slate-100"
+                            : "bg-white opacity-50"
                         }`}
                       >
                         {v}
@@ -172,33 +179,57 @@ export default function NaiveSortPage({ onBack }) {
                   })}
                 </div>
 
-                <div className="grid gap-3 md:grid-cols-3">
+                <div className="grid gap-3 md:grid-cols-5">
                   <div className="p-3 border rounded bg-amber-50">
-                    <div className="text-xs font-semibold uppercase tracking-wide text-amber-700">i</div>
+                    <div className="text-xs font-semibold uppercase tracking-wide text-amber-700">
+                      i
+                    </div>
                     <div className="mt-1 text-2xl font-bold text-amber-900">
                       {currentStep.i !== null ? currentStep.i : "-"}
                     </div>
                   </div>
 
-                  <div className="p-3 border rounded bg-emerald-50">
-                    <div className="text-xs font-semibold uppercase tracking-wide text-emerald-700">j</div>
-                    <div className="mt-1 text-2xl font-bold text-emerald-900">
-                      {currentStep.j !== null ? currentStep.j : "-"}
+                  <div className="p-3 border rounded bg-purple-50">
+                    <div className="text-xs font-semibold uppercase tracking-wide text-purple-700">
+                      k
+                    </div>
+                    <div className="mt-1 text-2xl font-bold text-purple-900">
+                      {currentStep.k !== null ? currentStep.k : "-"}
+                    </div>
+                  </div>
+
+                  <div className="p-3 border rounded bg-pink-50">
+                    <div className="text-xs font-semibold uppercase tracking-wide text-pink-700">
+                      sup
+                    </div>
+                    <div className="mt-1 text-2xl font-bold text-pink-900">
+                      {currentStep.sup !== null ? currentStep.sup : "-"}
                     </div>
                   </div>
 
                   <div className="p-3 border rounded bg-blue-50">
-                    <div className="text-xs font-semibold uppercase tracking-wide text-blue-700">temp</div>
+                    <div className="text-xs font-semibold uppercase tracking-wide text-blue-700">
+                      comodo
+                    </div>
                     <div className="mt-1 text-2xl font-bold text-blue-900">
-                      {currentStep.temp !== null ? currentStep.temp : "-"}
+                      {currentStep.comodo !== null ? currentStep.comodo : "-"}
+                    </div>
+                  </div>
+
+                  <div className="p-3 border rounded bg-emerald-50">
+                    <div className="text-xs font-semibold uppercase tracking-wide text-emerald-700">
+                      continua
+                    </div>
+                    <div className="mt-1 text-xl font-bold text-emerald-900">
+                      {currentStep.continua ? "true" : "false"}
                     </div>
                   </div>
                 </div>
 
-                <div className="grid gap-3 md:grid-cols-3">
+                <div className="grid gap-3 md:grid-cols-2">
                   <div className="p-3 border rounded bg-purple-50">
                     <div className="text-xs font-semibold uppercase tracking-wide text-purple-700">
-                      {currentStep.i !== null ? `v[${currentStep.i}]` : "v[i]"}
+                      {currentStep.i !== null ? `Vet[${currentStep.i}]` : "Vet[i]"}
                     </div>
                     <div className="mt-1 text-2xl font-bold text-purple-900">
                       {currentStep.i !== null ? currentStep.array[currentStep.i] : "-"}
@@ -207,14 +238,12 @@ export default function NaiveSortPage({ onBack }) {
 
                   <div className="p-3 border rounded bg-pink-50">
                     <div className="text-xs font-semibold uppercase tracking-wide text-pink-700">
-                      {currentStep.j !== null ? `v[${currentStep.j}]` : "v[j]"}
+                      {currentStep.i !== null ? `Vet[${currentStep.i + 1}]` : "Vet[i+1]"}
                     </div>
                     <div className="mt-1 text-2xl font-bold text-pink-900">
-                      {currentStep.j !== null ? currentStep.array[currentStep.j] : "-"}
+                      {currentStep.i !== null ? currentStep.array[currentStep.i + 1] : "-"}
                     </div>
                   </div>
-
-                  <div></div>
                 </div>
 
                 <div ref={descRef} className="rounded-md border bg-white p-3 max-h-56 overflow-y-auto">

@@ -1,5 +1,6 @@
 import { ArrowLeft } from "lucide-react";
 import { Card, CardHeader, CardTitle, CardContent, Button } from "../components/ui";
+import Footer from "../components/Footer";
 
 export default function PlaceholderPage({ title, description, onBack }) {
   return (
@@ -23,6 +24,7 @@ export default function PlaceholderPage({ title, description, onBack }) {
           </CardContent>
         </Card>
       </div>
+          <Footer />
     </div>
   );
 }

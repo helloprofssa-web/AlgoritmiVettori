@@ -1,18 +1,18 @@
-export const cppLinesNaiveSort = [
-  "void OrdinamentoIngenuo(int v[], int n) {",
+export const cppLinesBubbleSort = [
+  "void bubbleSort(int v[], int n) {",
   "    for (int i = 0; i < n - 1; i++) {",
-  "        for (int j = i + 1; j < n; j++) {",
-  "            if (v[i] > v[j]) {",
-  "                int temp = v[i];",
-  "                v[i] = v[j];",
-  "                v[j] = temp;",
+  "        for (int j = 0; j < n - i - 1; j++) {",
+  "            if (v[j] > v[j + 1]) {",
+  "                int temp = v[j];",
+  "                v[j] = v[j + 1];",
+  "                v[j + 1] = temp;",
   "            }",
   "        }",
   "    }",
   "}",
 ];
 
-export function naiveSortSteps(input) {
+export function bubbleSortSteps(input) {
   const a = [...input];
   const steps = [];
 
@@ -21,6 +21,7 @@ export function naiveSortSteps(input) {
     i: null,
     j: null,
     temp: null,
+    sortedFrom: a.length,
     activeLine: null,
     description: "Vettore iniziale.",
   });
@@ -31,61 +32,65 @@ export function naiveSortSteps(input) {
       i,
       j: null,
       temp: null,
+      sortedFrom: a.length - i,
       activeLine: 1,
-      description: `Inizio ciclo esterno i = ${i}.`,
+      description: `Inizio passata esterna i = ${i}.`,
     });
 
-    for (let j = i + 1; j < a.length; j++) {
+    for (let j = 0; j < a.length - i - 1; j++) {
       steps.push({
         array: [...a],
         i,
         j,
         temp: null,
+        sortedFrom: a.length - i,
         activeLine: 2,
-        description: `Inizio ciclo interno j = ${j}.`,
+        description: `Confronto tra v[${j}] = ${a[j]} e v[${j + 1}] = ${a[j + 1]}.`,
       });
-
-      const shouldSwap = a[i] > a[j];
 
       steps.push({
         array: [...a],
         i,
         j,
         temp: null,
+        sortedFrom: a.length - i,
         activeLine: 3,
-        description: `Controllo se ${a[i]} > ${a[j]}.`,
+        description: `Verifico se ${a[j]} > ${a[j + 1]}.`,
       });
 
-      if (shouldSwap) {
-        const temp = a[i];
+      if (a[j] > a[j + 1]) {
+        const temp = a[j];
 
         steps.push({
           array: [...a],
           i,
           j,
           temp,
+          sortedFrom: a.length - i,
           activeLine: 4,
-          description: `Salvo ${a[i]} in temp.`,
+          description: `Salvo ${a[j]} in temp.`,
         });
 
-        a[i] = a[j];
+        a[j] = a[j + 1];
         steps.push({
           array: [...a],
           i,
           j,
           temp,
+          sortedFrom: a.length - i,
           activeLine: 5,
-          description: `Assegno v[${i}] = ${a[i]}.`,
+          description: `Assegno v[${j}] = ${a[j]}.`,
         });
 
-        a[j] = temp;
+        a[j + 1] = temp;
         steps.push({
           array: [...a],
           i,
           j,
           temp,
+          sortedFrom: a.length - i,
           activeLine: 6,
-          description: `Assegno v[${j}] = temp (${temp}).`,
+          description: `Assegno v[${j + 1}] = temp (${temp}).`,
         });
       }
     }
@@ -96,18 +101,10 @@ export function naiveSortSteps(input) {
     i: null,
     j: null,
     temp: null,
+    sortedFrom: 0,
     activeLine: null,
     description: "Ordinamento completato.",
   });
 
   return steps;
-}
-
-export function parseVector(text) {
-  return text
-    .split(",")
-    .map((x) => x.trim())
-    .filter((x) => x !== "")
-    .map(Number)
-    .filter((x) => !Number.isNaN(x));
 }

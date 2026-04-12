@@ -1,5 +1,6 @@
 import { Search, Home, ArrowUpDown, Binary } from "lucide-react";
 import { Card, CardHeader, CardTitle, CardContent, Button } from "../components/ui";
+import Footer from "../components/Footer";
 
 export default function HomePage({ onNavigate }) {
   const items = [
@@ -26,11 +27,18 @@ export default function HomePage({ onNavigate }) {
     },
     {
       key: "bubble-sort",
-      title: "Bubble sort",
+      title: "Bubble sort classico",
       description:
-        "Confronta elementi adiacenti e osserva come i valori più grandi si spostano verso destra.",
+        "Versione classica con due cicli for, utile per mostrare i confronti e gli scambi tra elementi adiacenti.",
       icon: ArrowUpDown,
     },
+    {
+  key: "bubble-sort-while",
+  title: "Bubble sort con while",
+  description:
+    "Versione ottimizzata con while, variabile continua, limite k e valore sup per interrompere prima l'algoritmo.",
+  icon: ArrowUpDown,
+}
   ];
 
   return (
@@ -52,7 +60,10 @@ export default function HomePage({ onNavigate }) {
             const Icon = item.icon;
 
             return (
-              <Card key={item.key} className="rounded-3xl shadow-sm border hover:shadow-md transition-shadow">
+              <Card
+                key={item.key}
+                className="rounded-3xl shadow-sm border hover:shadow-md transition-shadow"
+              >
                 <CardHeader>
                   <CardTitle className="flex items-center gap-3 text-2xl">
                     <Icon className="h-6 w-6" />
@@ -68,6 +79,8 @@ export default function HomePage({ onNavigate }) {
             );
           })}
         </div>
+
+        <Footer />
       </div>
     </div>
   );

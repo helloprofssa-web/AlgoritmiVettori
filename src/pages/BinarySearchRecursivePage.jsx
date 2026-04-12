@@ -1,13 +1,19 @@
 import { useEffect, useMemo, useRef, useState } from "react";
-import { Play, Pause, RotateCcw, SkipForward, ArrowUpDown, ArrowLeft } from "lucide-react";
+import { Play, Pause, RotateCcw, SkipForward, Binary, ArrowLeft } from "lucide-react";
 import { Card, CardHeader, CardTitle, CardContent, Button, Input, Badge } from "../components/ui";
 import CodeSidebar from "../components/CodeSidebar";
 import Footer from "../components/Footer";
-import { cppLinesNaiveSort, naiveSortSteps, parseVector } from "../algorithms/naiveSort";
+import { parseVector } from "../algorithms/naiveSort";
+import {
+  cppLinesBinarySearchRecursive,
+  binarySearchRecursiveSteps,
+} from "../algorithms/binarySearchRecursive";
 
-export default function NaiveSortPage({ onBack }) {
-  const [inputText, setInputText] = useState("7, 3, 9, 2, 5");
-  const [baseArray, setBaseArray] = useState([7, 3, 9, 2, 5]);
+export default function BinarySearchRecursivePage({ onBack }) {
+  const [inputText, setInputText] = useState("2, 4, 7, 9, 12, 15, 18");
+  const [targetText, setTargetText] = useState("15");
+  const [baseArray, setBaseArray] = useState([2, 4, 7, 9, 12, 15, 18]);
+  const [target, setTarget] = useState(15);
   const [stepIndex, setStepIndex] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
   const [speed, setSpeed] = useState(900);
@@ -15,7 +21,7 @@ export default function NaiveSortPage({ onBack }) {
   const timerRef = useRef(null);
   const descRef = useRef(null);
 
-  const steps = useMemo(() => naiveSortSteps(baseArray), [baseArray]);
+  const steps = useMemo(() => binarySearchRecursiveSteps(baseArray, target), [baseArray, target]);
   const currentStep = steps[Math.min(stepIndex, steps.length - 1)];
   const visibleDescriptions = steps.slice(0, stepIndex + 1).map((step) => step.description);
 
@@ -41,21 +47,27 @@ export default function NaiveSortPage({ onBack }) {
     }
   }, [stepIndex]);
 
-  const comparisonsCount = steps.slice(0, stepIndex + 1).filter((s) => s.activeLine === 3).length;
-  const swapsCount = steps.slice(0, stepIndex + 1).filter((s) => s.activeLine === 6).length;
+  const callsCount = steps.slice(0, stepIndex + 1).filter((s) => s.activeLine === 0).length;
+  const comparisonsCount = steps
+    .slice(0, stepIndex + 1)
+    .filter((s) => s.activeLine === 5 || s.activeLine === 8).length;
 
   const startSimulation = () => {
     const parsed = parseVector(inputText);
+    const parsedTarget = Number(targetText);
 
-    if (parsed.length > 0) {
+    if (parsed.length > 0 && !Number.isNaN(parsedTarget)) {
       const sameArray =
         parsed.length === baseArray.length &&
         parsed.every((value, index) => value === baseArray[index]);
 
+      const sameTarget = parsedTarget === target;
+
       setBaseArray(parsed);
+      setTarget(parsedTarget);
       setStepIndex(0);
 
-      if (sameArray) {
+      if (sameArray && sameTarget) {
         setIsPlaying(true);
       } else {
         setIsPlaying(false);
@@ -79,13 +91,13 @@ export default function NaiveSortPage({ onBack }) {
   return (
     <div className="h-screen flex">
       <div className="w-[360px] border-r border-slate-200">
-        <CodeSidebar lines={cppLinesNaiveSort} activeLine={currentStep.activeLine} />
+        <CodeSidebar lines={cppLinesBinarySearchRecursive} activeLine={currentStep.activeLine} />
       </div>
 
       <div className="flex-1 overflow-y-auto bg-slate-50 p-6">
         <div className="max-w-6xl mx-auto space-y-6">
           <div className="flex items-center justify-between gap-4">
-            <h1 className="text-3xl font-bold">Ordinamento ingenuo</h1>
+            <h1 className="text-3xl font-bold">Ricerca binaria ricorsiva</h1>
 
             <Button variant="outline" onClick={onBack}>
               <ArrowLeft className="mr-2 h-4 w-4" />
@@ -97,21 +109,34 @@ export default function NaiveSortPage({ onBack }) {
             <Card className="xl:col-span-2">
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
-                  <ArrowUpDown className="h-5 w-5" />
+                  <Binary className="h-5 w-5" />
                   Simulazione
                 </CardTitle>
               </CardHeader>
 
               <CardContent className="space-y-4">
-                <div>
-                  <label className="mb-1 block text-sm font-medium text-slate-700">
-                    Vettore
-                  </label>
-                  <Input
-                    value={inputText}
-                    onChange={(e) => setInputText(e.target.value)}
-                    placeholder="Es. 7, 3, 9, 2, 5"
-                  />
+                <div className="grid gap-4 md:grid-cols-2 items-end">
+                  <div>
+                    <label className="mb-1 block text-sm font-medium text-slate-700">
+                      Vettore
+                    </label>
+                    <Input
+                      value={inputText}
+                      onChange={(e) => setInputText(e.target.value)}
+                      placeholder="Es. 2, 4, 7, 9, 12"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="mb-1 block text-sm font-medium text-slate-700">
+                      Elemento da cercare
+                    </label>
+                    <Input
+                      value={targetText}
+                      onChange={(e) => setTargetText(e.target.value)}
+                      placeholder="Es. 15"
+                    />
+                  </div>
                 </div>
 
                 <div className="flex gap-2">
@@ -150,20 +175,44 @@ export default function NaiveSortPage({ onBack }) {
                   />
                 </div>
 
+                <div className="rounded-xl border bg-white p-4">
+                  <div className="text-xs font-semibold uppercase tracking-wide text-slate-500">
+                    chiamata attuale
+                  </div>
+                  <div className="mt-2 font-mono text-sm text-slate-800">{currentStep.callText}</div>
+                  <div className="mt-2 text-sm text-slate-600">
+                    Profondità ricorsiva: {currentStep.depth}
+                  </div>
+                </div>
+
                 <div className="flex gap-2 flex-wrap">
                   {currentStep.array.map((v, i) => {
-                    const isI = i === currentStep.i;
-                    const isJ = i === currentStep.j;
+                    const isPrimo = i === currentStep.primo;
+                    const isUltimo = i === currentStep.ultimo;
+                    const isCentro = i === currentStep.centro;
+                    const isFound = i === currentStep.foundIndex;
+
+                    const inRange =
+                      currentStep.primo !== null &&
+                      currentStep.ultimo !== null &&
+                      i >= currentStep.primo &&
+                      i <= currentStep.ultimo;
 
                     return (
                       <div
                         key={i}
                         className={`w-14 h-14 flex items-center justify-center border rounded font-bold ${
-                          isI
+                          isFound
+                            ? "bg-emerald-200 border-emerald-500"
+                            : isCentro
+                            ? "bg-amber-200 border-amber-500"
+                            : isPrimo
                             ? "bg-purple-200 border-purple-500"
-                            : isJ
+                            : isUltimo
                             ? "bg-pink-200 border-pink-500"
-                            : "bg-white"
+                            : inRange
+                            ? "bg-slate-100"
+                            : "bg-white opacity-50"
                         }`}
                       >
                         {v}
@@ -172,52 +221,48 @@ export default function NaiveSortPage({ onBack }) {
                   })}
                 </div>
 
-                <div className="grid gap-3 md:grid-cols-3">
-                  <div className="p-3 border rounded bg-amber-50">
-                    <div className="text-xs font-semibold uppercase tracking-wide text-amber-700">i</div>
-                    <div className="mt-1 text-2xl font-bold text-amber-900">
-                      {currentStep.i !== null ? currentStep.i : "-"}
-                    </div>
-                  </div>
-
-                  <div className="p-3 border rounded bg-emerald-50">
-                    <div className="text-xs font-semibold uppercase tracking-wide text-emerald-700">j</div>
-                    <div className="mt-1 text-2xl font-bold text-emerald-900">
-                      {currentStep.j !== null ? currentStep.j : "-"}
-                    </div>
-                  </div>
-
-                  <div className="p-3 border rounded bg-blue-50">
-                    <div className="text-xs font-semibold uppercase tracking-wide text-blue-700">temp</div>
-                    <div className="mt-1 text-2xl font-bold text-blue-900">
-                      {currentStep.temp !== null ? currentStep.temp : "-"}
-                    </div>
-                  </div>
-                </div>
-
-                <div className="grid gap-3 md:grid-cols-3">
+                <div className="grid gap-3 md:grid-cols-4">
                   <div className="p-3 border rounded bg-purple-50">
                     <div className="text-xs font-semibold uppercase tracking-wide text-purple-700">
-                      {currentStep.i !== null ? `v[${currentStep.i}]` : "v[i]"}
+                      primo
                     </div>
                     <div className="mt-1 text-2xl font-bold text-purple-900">
-                      {currentStep.i !== null ? currentStep.array[currentStep.i] : "-"}
+                      {currentStep.primo !== null ? currentStep.primo : "-"}
+                    </div>
+                  </div>
+
+                  <div className="p-3 border rounded bg-amber-50">
+                    <div className="text-xs font-semibold uppercase tracking-wide text-amber-700">
+                      centro
+                    </div>
+                    <div className="mt-1 text-2xl font-bold text-amber-900">
+                      {currentStep.centro !== null ? currentStep.centro : "-"}
                     </div>
                   </div>
 
                   <div className="p-3 border rounded bg-pink-50">
                     <div className="text-xs font-semibold uppercase tracking-wide text-pink-700">
-                      {currentStep.j !== null ? `v[${currentStep.j}]` : "v[j]"}
+                      ultimo
                     </div>
                     <div className="mt-1 text-2xl font-bold text-pink-900">
-                      {currentStep.j !== null ? currentStep.array[currentStep.j] : "-"}
+                      {currentStep.ultimo !== null ? currentStep.ultimo : "-"}
                     </div>
                   </div>
 
-                  <div></div>
+                  <div className="p-3 border rounded bg-blue-50">
+                    <div className="text-xs font-semibold uppercase tracking-wide text-blue-700">
+                      target
+                    </div>
+                    <div className="mt-1 text-2xl font-bold text-blue-900">
+                      {currentStep.target}
+                    </div>
+                  </div>
                 </div>
 
-                <div ref={descRef} className="rounded-md border bg-white p-3 max-h-56 overflow-y-auto">
+                <div
+                  ref={descRef}
+                  className="rounded-md border bg-white p-3 max-h-56 overflow-y-auto"
+                >
                   <div className="space-y-1 text-sm">
                     {visibleDescriptions.map((description, index) => {
                       const isCurrent = index === stepIndex;
@@ -254,9 +299,9 @@ export default function NaiveSortPage({ onBack }) {
               </CardHeader>
 
               <CardContent className="space-y-3">
-                <Badge>Confronti: {comparisonsCount}</Badge>
+                <Badge>Chiamate: {callsCount}</Badge>
                 <br />
-                <Badge>Scambi: {swapsCount}</Badge>
+                <Badge>Confronti: {comparisonsCount}</Badge>
               </CardContent>
             </Card>
           </div>
