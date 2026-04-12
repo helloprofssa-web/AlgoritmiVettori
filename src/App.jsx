@@ -10,6 +10,7 @@ import LinearSearchForPage from "./pages/LinearSearchForPage";
 import OrderedLinearSearchPage from "./pages/OrderedLinearSearchPage";
 import SelectionSortPage from "./pages/SelectionSortPage";
 import InsertionSortPage from "./pages/InsertionSortPage";
+import CompareSortPage from "./pages/CompareSortPage";
 
 export default function App() {
   const [page, setPage] = useState("home");
@@ -52,6 +53,10 @@ export default function App() {
 
   if (page === "insertion-sort") {
     return <InsertionSortPage onBack={() => setPage("home")} />;
+  }
+
+  if (page === "confronto-ordinamenti") {
+    return <CompareSortPage onBack={() => setPage("home")} />;
   }
 
   return <HomePage onNavigate={setPage} />;

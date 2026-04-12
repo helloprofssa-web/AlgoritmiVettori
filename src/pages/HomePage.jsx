@@ -86,6 +86,16 @@ export default function HomePage({ onNavigate }) {
     },
   ];
 
+const chekingSortItems = [
+  {
+  key: "confronto-ordinamenti",
+  title: "Confronto Bubble vs Selection",
+  description:
+    "Stesso vettore, due strategie diverse: osserva visivamente confronti, scambi e andamento dei due algoritmi.",
+  icon: ArrowUpDown,
+}
+]
+
   const renderCard = (item) => {
     const Icon = item.icon;
 
@@ -168,6 +178,15 @@ export default function HomePage({ onNavigate }) {
             </h2>
             <div className="grid gap-6 md:grid-cols-2">
               {advancedSortItems.map(renderCard)}
+            </div>
+          </div>
+       
+        <div>
+            <h2 className="mb-4 text-2xl font-semibold text-slate-800">
+              Bubble Sort vs Selection Sort
+            </h2>
+            <div className="grid gap-6 md:grid-cols-2">
+              {chekingSortItems.map(renderCard)}
             </div>
           </div>
         </div>
