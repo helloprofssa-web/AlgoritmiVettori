@@ -3,7 +3,7 @@ import { Card, CardHeader, CardTitle, CardContent, Button } from "../components/
 import Footer from "../components/Footer";
 
 export default function HomePage({ onNavigate }) {
-  const firstRowItems = [
+  const sequentialSearchItems = [
     {
       key: "ricerca-lineare-while",
       title: "Ricerca su vettore non ordinato con while",
@@ -27,7 +27,7 @@ export default function HomePage({ onNavigate }) {
     },
   ];
 
-  const secondRowItems = [
+  const binarySearchItems = [
     {
       key: "ricerca-binaria",
       title: "Ricerca binaria",
@@ -52,7 +52,7 @@ export default function HomePage({ onNavigate }) {
     icon: ArrowUpDown,
   };
 
-  const bubbleItems = [
+  const bubbleSortItems = [
     {
       key: "bubble-sort",
       title: "Bubble sort classico",
@@ -65,6 +65,23 @@ export default function HomePage({ onNavigate }) {
       title: "Bubble sort con while",
       description:
         "Versione ottimizzata con while, variabile continua, limite k e valore sup per interrompere prima l'algoritmo.",
+      icon: ArrowUpDown,
+    },
+  ];
+
+  const advancedSortItems = [
+    {
+      key: "selection-sort",
+      title: "Selection Sort",
+      description:
+        "Trova ogni volta il minimo nella parte non ordinata e lo porta nella posizione corretta.",
+      icon: ArrowUpDown,
+    },
+    {
+      key: "insertion-sort",
+      title: "Insertion Sort",
+      description:
+        "Inserisce ogni elemento nella posizione corretta all'interno della parte già ordinata del vettore.",
       icon: ArrowUpDown,
     },
   ];
@@ -102,36 +119,55 @@ export default function HomePage({ onNavigate }) {
           </div>
 
           <p className="text-lg text-slate-600 max-w-4xl leading-7">
-            Benvenuti in questa piccola raccolta di simulazioni interattive. In queste pagine puoi osservare il funzionamento di alcuni algoritmi classici studiati in C++, seguendo passo passo il codice, le variabili e l'evoluzione del vettore.
+            Benvenuti in questa raccolta di simulazioni interattive. In queste pagine puoi osservare
+            il funzionamento di alcuni algoritmi classici studiati in C++, seguendo passo passo il
+            codice, le variabili e l'evoluzione del vettore.
           </p>
         </div>
 
         <div className="space-y-8">
           <div>
-            <h2 className="mb-4 text-2xl font-semibold text-slate-800">Ricerche sequenziali</h2>
+            <h2 className="mb-4 text-2xl font-semibold text-slate-800">
+              Ricerche sequenziali
+            </h2>
             <div className="grid gap-6 lg:grid-cols-3">
-              {firstRowItems.map(renderCard)}
+              {sequentialSearchItems.map(renderCard)}
             </div>
           </div>
 
           <div>
-            <h2 className="mb-4 text-2xl font-semibold text-slate-800">Ricerca binaria</h2>
+            <h2 className="mb-4 text-2xl font-semibold text-slate-800">
+              Ricerca binaria
+            </h2>
             <div className="grid gap-6 md:grid-cols-2">
-              {secondRowItems.map(renderCard)}
+              {binarySearchItems.map(renderCard)}
             </div>
           </div>
 
           <div>
-            <h2 className="mb-4 text-2xl font-semibold text-slate-800">Ordinamento ingenuo</h2>
+            <h2 className="mb-4 text-2xl font-semibold text-slate-800">
+              Ordinamento ingenuo
+            </h2>
             <div className="grid gap-6 md:grid-cols-1">
               {renderCard(naiveSortItem)}
             </div>
           </div>
 
           <div>
-            <h2 className="mb-4 text-2xl font-semibold text-slate-800">Bubble sort</h2>
+            <h2 className="mb-4 text-2xl font-semibold text-slate-800">
+              Bubble sort
+            </h2>
             <div className="grid gap-6 md:grid-cols-2">
-              {bubbleItems.map(renderCard)}
+              {bubbleSortItems.map(renderCard)}
+            </div>
+          </div>
+
+          <div>
+            <h2 className="mb-4 text-2xl font-semibold text-slate-800">
+              Ordinamenti avanzati
+            </h2>
+            <div className="grid gap-6 md:grid-cols-2">
+              {advancedSortItems.map(renderCard)}
             </div>
           </div>
         </div>

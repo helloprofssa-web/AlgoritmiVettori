@@ -8,6 +8,8 @@ import BinarySearchRecursivePage from "./pages/BinarySearchRecursivePage";
 import LinearSearchWhilePage from "./pages/LinearSearchWhilePage";
 import LinearSearchForPage from "./pages/LinearSearchForPage";
 import OrderedLinearSearchPage from "./pages/OrderedLinearSearchPage";
+import SelectionSortPage from "./pages/SelectionSortPage";
+import InsertionSortPage from "./pages/InsertionSortPage";
 
 export default function App() {
   const [page, setPage] = useState("home");
@@ -42,6 +44,14 @@ export default function App() {
 
   if (page === "bubble-sort-while") {
     return <BubbleSortWhilePage onBack={() => setPage("home")} />;
+  }
+
+  if (page === "selection-sort") {
+    return <SelectionSortPage onBack={() => setPage("home")} />;
+  }
+
+  if (page === "insertion-sort") {
+    return <InsertionSortPage onBack={() => setPage("home")} />;
   }
 
   return <HomePage onNavigate={setPage} />;
