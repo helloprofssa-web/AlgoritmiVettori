@@ -2,6 +2,10 @@ import { Search, Home, ArrowUpDown, Binary } from "lucide-react";
 import { Card, CardHeader, CardTitle, CardContent, Button } from "../components/ui";
 import Footer from "../components/Footer";
 
+function BubbleIcon() {
+      return <span className="text-2xl leading-none">🫧</span>;
+}
+
 export default function HomePage({ onNavigate }) {
   const sequentialSearchItems = [
     {
@@ -25,6 +29,20 @@ export default function HomePage({ onNavigate }) {
         "Controllo preliminare sull'ultimo elemento del vettore ordinato, poi ricerca sequenziale.",
       icon: Search,
     },
+     {
+      key: "count-occurrences",
+      title: "Conteggio occorrenze",
+      description:
+        "Conta quante volte compare un elemento all'interno del vettore.",
+      icon: Search,
+    },
+    {
+      key: "last-occurrence",
+      title: "Ultima occorrenza",
+      description:
+        "Restituisce la posizione dell'ultima occorrenza dell'elemento cercato.",
+      icon: Search,
+    },
   ];
 
   const binarySearchItems = [
@@ -33,7 +51,7 @@ export default function HomePage({ onNavigate }) {
       title: "Ricerca binaria",
       description:
         "Esplora la ricerca binaria su un vettore ordinato, osservando metà sinistra, metà destra e posizione centrale.",
-      icon: Search,
+      icon: Binary,
     },
     {
       key: "ricerca-binaria-ricorsiva",
@@ -58,14 +76,14 @@ export default function HomePage({ onNavigate }) {
       title: "Bubble sort classico",
       description:
         "Versione classica con due cicli for, utile per mostrare i confronti e gli scambi tra elementi adiacenti.",
-      icon: ArrowUpDown,
+      icon: "bubble",
     },
     {
       key: "bubble-sort-while",
       title: "Bubble sort con while",
       description:
         "Versione ottimizzata con while, variabile continua, limite k e valore sup per interrompere prima l'algoritmo.",
-      icon: ArrowUpDown,
+      icon: "bubble",
     },
   ];
 
@@ -84,21 +102,26 @@ export default function HomePage({ onNavigate }) {
         "Inserisce ogni elemento nella posizione corretta all'interno della parte già ordinata del vettore.",
       icon: ArrowUpDown,
     },
-  ];
-
-const chekingSortItems = [
-  {
+     {
   key: "confronto-ordinamenti",
   title: "Confronto Bubble vs Selection",
   description:
     "Stesso vettore, due strategie diverse: osserva visivamente confronti, scambi e andamento dei due algoritmi.",
   icon: ArrowUpDown,
-}
-]
+},
+  ];
+
+
+  const renderIcon = (item) => {
+    if (item.icon === "bubble") {
+      return <BubbleIcon />;
+    }
+
+    const Icon = item.icon;
+    return <Icon className="h-6 w-6" />;
+  };
 
   const renderCard = (item) => {
-    const Icon = item.icon;
-
     return (
       <Card
         key={item.key}
@@ -106,7 +129,7 @@ const chekingSortItems = [
       >
         <CardHeader>
           <CardTitle className="flex items-center gap-3 text-2xl">
-            <Icon className="h-6 w-6" />
+            {renderIcon(item)}
             {item.title}
           </CardTitle>
         </CardHeader>
@@ -178,15 +201,6 @@ const chekingSortItems = [
             </h2>
             <div className="grid gap-6 md:grid-cols-2">
               {advancedSortItems.map(renderCard)}
-            </div>
-          </div>
-       
-        <div>
-            <h2 className="mb-4 text-2xl font-semibold text-slate-800">
-              Bubble Sort vs Selection Sort
-            </h2>
-            <div className="grid gap-6 md:grid-cols-2">
-              {chekingSortItems.map(renderCard)}
             </div>
           </div>
         </div>

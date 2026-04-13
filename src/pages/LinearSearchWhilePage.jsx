@@ -3,7 +3,7 @@ import { Play, Pause, RotateCcw, SkipForward, Search, ArrowLeft } from "lucide-r
 import { Card, CardHeader, CardTitle, CardContent, Button, Input, Badge } from "../components/ui";
 import CodeSidebar from "../components/CodeSidebar";
 import Footer from "../components/Footer";
-import { parseVector } from "../algorithms/naiveSort";
+import { parseVector } from "../algorithms/parseVector";
 import {
   cppLinesLinearSearchWhile,
   linearSearchWhileSteps,
@@ -94,8 +94,12 @@ export default function LinearSearchWhilePage({ onBack }) {
       <div className="flex-1 overflow-y-auto bg-slate-50 p-6">
         <div className="max-w-6xl mx-auto space-y-6">
           <div className="flex items-center justify-between gap-4">
-            <h1 className="text-3xl font-bold">Ricerca su vettore non ordinato con while</h1>
-
+                   <div className="flex items-center gap-2">
+                   <Search className="h-7 w-7" />
+                <h1 className="text-3xl font-bold">Ricerca su vettore non ordinato con while</h1>
+             </div>
+           
+           
             <Button variant="outline" onClick={onBack}>
               <ArrowLeft className="mr-2 h-4 w-4" />
               Torna alla home
@@ -106,8 +110,7 @@ export default function LinearSearchWhilePage({ onBack }) {
             <Card className="xl:col-span-2">
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
-                  <Search className="h-5 w-5" />
-                  Simulazione
+                 Simulazione
                 </CardTitle>
               </CardHeader>
 

@@ -3,7 +3,7 @@ import { Play, Pause, RotateCcw, SkipForward, ArrowUpDown, ArrowLeft } from "luc
 import { Card, CardHeader, CardTitle, CardContent, Button, Input, Badge } from "../components/ui";
 import CodeSidebar from "../components/CodeSidebar";
 import Footer from "../components/Footer";
-import { parseVector } from "../algorithms/naiveSort";
+import { parseVector } from "../algorithms/parseVector";
 import {
   cppLinesInsertionSort,
   insertionSortSteps,
@@ -91,7 +91,10 @@ export default function InsertionSortPage({ onBack }) {
         <div className="max-w-6xl mx-auto space-y-6">
           {/* TITOLO */}
           <div className="flex items-center justify-between gap-4">
-            <h1 className="text-3xl font-bold">Insertion Sort</h1>
+                       <div className="flex items-center gap-2">
+  <ArrowUpDown className="h-7 w-7" />
+  <h1 className="text-3xl font-bold">Insertion Sort</h1>
+</div>
 
             <Button variant="outline" onClick={onBack}>
               <ArrowLeft className="mr-2 h-4 w-4" />
@@ -104,7 +107,6 @@ export default function InsertionSortPage({ onBack }) {
             <Card className="xl:col-span-2">
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
-                  <ArrowUpDown className="h-5 w-5" />
                   Simulazione
                 </CardTitle>
               </CardHeader>

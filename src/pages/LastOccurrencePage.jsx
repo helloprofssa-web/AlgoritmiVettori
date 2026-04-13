@@ -5,14 +5,14 @@ import CodeSidebar from "../components/CodeSidebar";
 import Footer from "../components/Footer";
 import { parseVector } from "../algorithms/parseVector";
 import {
-  cppLinesOrderedLinearSearch,
-  orderedLinearSearchSteps,
-} from "../algorithms/orderedLinearSearch";
+  cppLinesLastOccurrence,
+  lastOccurrenceSteps,
+} from "../algorithms/lastOccurrence";
 
-export default function OrderedLinearSearchPage({ onBack }) {
-  const [inputText, setInputText] = useState("2, 4, 7, 9, 12, 15");
+export default function LastOccurrencePage({ onBack }) {
+  const [inputText, setInputText] = useState("7, 3, 9, 2, 5, 9, 4");
   const [targetText, setTargetText] = useState("9");
-  const [baseArray, setBaseArray] = useState([2, 4, 7, 9, 12, 15]);
+  const [baseArray, setBaseArray] = useState([7, 3, 9, 2, 5, 9, 4]);
   const [target, setTarget] = useState(9);
   const [stepIndex, setStepIndex] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
@@ -21,7 +21,7 @@ export default function OrderedLinearSearchPage({ onBack }) {
   const timerRef = useRef(null);
   const descRef = useRef(null);
 
-  const steps = useMemo(() => orderedLinearSearchSteps(baseArray, target), [baseArray, target]);
+  const steps = useMemo(() => lastOccurrenceSteps(baseArray, target), [baseArray, target]);
   const currentStep = steps[Math.min(stepIndex, steps.length - 1)];
   const visibleDescriptions = steps.slice(0, stepIndex + 1).map((step) => step.description);
 
@@ -49,7 +49,7 @@ export default function OrderedLinearSearchPage({ onBack }) {
 
   const comparisonsCount = steps
     .slice(0, stepIndex + 1)
-    .filter((s) => s.activeLine === 1 || s.activeLine === 4).length;
+    .filter((s) => s.activeLine === 3).length;
 
   const startSimulation = () => {
     const parsed = parseVector(inputText);
@@ -90,18 +90,18 @@ export default function OrderedLinearSearchPage({ onBack }) {
   return (
     <div className="h-screen flex">
       <div className="w-[360px] border-r border-slate-200">
-        <CodeSidebar lines={cppLinesOrderedLinearSearch} activeLine={currentStep.activeLine} />
+        <CodeSidebar lines={cppLinesLastOccurrence} activeLine={currentStep.activeLine} />
       </div>
 
       <div className="flex-1 overflow-y-auto bg-slate-50 p-6">
         <div className="max-w-6xl mx-auto space-y-6">
           <div className="flex items-center justify-between gap-4">
             <div className="flex items-center gap-2">
-                   <Search className="h-7 w-7" />
-             <h1 className="text-3xl font-bold">Ricerca semplice su vettore ordinato</h1>
-             </div>
-            
-                       <Button variant="outline" onClick={onBack}>
+              <Search className="h-6 w-6" />
+              <h1 className="text-3xl font-bold">Ultima occorrenza</h1>
+            </div>
+
+            <Button variant="outline" onClick={onBack}>
               <ArrowLeft className="mr-2 h-4 w-4" />
               Torna alla home
             </Button>
@@ -110,9 +110,7 @@ export default function OrderedLinearSearchPage({ onBack }) {
           <div className="grid gap-6 xl:grid-cols-3">
             <Card className="xl:col-span-2">
               <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  Simulazione
-                </CardTitle>
+                <CardTitle>Simulazione</CardTitle>
               </CardHeader>
 
               <CardContent className="space-y-4">
@@ -124,7 +122,7 @@ export default function OrderedLinearSearchPage({ onBack }) {
                     <Input
                       value={inputText}
                       onChange={(e) => setInputText(e.target.value)}
-                      placeholder="Es. 2, 4, 7, 9, 12, 15"
+                      placeholder="Es. 7, 3, 9, 2, 5, 9, 4"
                     />
                   </div>
 
@@ -179,19 +177,19 @@ export default function OrderedLinearSearchPage({ onBack }) {
                 <div className="flex gap-2 flex-wrap">
                   {currentStep.array.map((v, i) => {
                     const isI = i === currentStep.i;
-                    const isFound = i === currentStep.foundIndex;
-                    const isLast = i === currentStep.array.length - 1;
+                    const isCurrentMatch = isI && v === currentStep.target;
+                    const isSavedPosition = i === currentStep.posizione;
 
                     return (
                       <div
                         key={i}
                         className={`w-14 h-14 flex items-center justify-center border rounded font-bold ${
-                          isFound
+                          isCurrentMatch
                             ? "bg-emerald-200 border-emerald-500"
+                            : isSavedPosition
+                            ? "bg-amber-200 border-amber-500"
                             : isI
                             ? "bg-purple-200 border-purple-500"
-                            : isLast
-                            ? "bg-amber-100 border-amber-400"
                             : "bg-white"
                         }`}
                       >
@@ -201,7 +199,7 @@ export default function OrderedLinearSearchPage({ onBack }) {
                   })}
                 </div>
 
-                <div className="grid gap-3 md:grid-cols-4">
+                <div className="grid gap-3 md:grid-cols-3">
                   <div className="p-3 border rounded bg-purple-50">
                     <div className="text-xs font-semibold uppercase tracking-wide text-purple-700">
                       i
@@ -222,19 +220,10 @@ export default function OrderedLinearSearchPage({ onBack }) {
 
                   <div className="p-3 border rounded bg-amber-50">
                     <div className="text-xs font-semibold uppercase tracking-wide text-amber-700">
-                      ultimo elemento
+                      posizione
                     </div>
                     <div className="mt-1 text-2xl font-bold text-amber-900">
-                      {currentStep.array[currentStep.array.length - 1]}
-                    </div>
-                  </div>
-
-                  <div className="p-3 border rounded bg-emerald-50">
-                    <div className="text-xs font-semibold uppercase tracking-wide text-emerald-700">
-                      posizione trovata
-                    </div>
-                    <div className="mt-1 text-2xl font-bold text-emerald-900">
-                      {currentStep.foundIndex !== null ? currentStep.foundIndex : "-"}
+                      {currentStep.posizione !== null ? currentStep.posizione : "-"}
                     </div>
                   </div>
                 </div>
@@ -249,16 +238,14 @@ export default function OrderedLinearSearchPage({ onBack }) {
                     </div>
                   </div>
 
-                 {/* <div className="p-3 border rounded bg-amber-50">
+                  <div className="p-3 border rounded bg-amber-50">
                     <div className="text-xs font-semibold uppercase tracking-wide text-amber-700">
-                      esito preliminare
+                      ultima posizione trovata
                     </div>
-                    <div className="mt-1 text-xl font-bold text-amber-900">
-                      {target > currentStep.array[currentStep.array.length - 1]
-                        ? "fuori range"
-                        : "ricerca possibile"}
+                    <div className="mt-1 text-2xl font-bold text-amber-900">
+                      {currentStep.posizione !== null ? currentStep.posizione : "-"}
                     </div>
-                  </div>*/}
+                  </div>
                 </div>
 
                 <div
@@ -283,7 +270,6 @@ export default function OrderedLinearSearchPage({ onBack }) {
                           >
                             {index + 1}.
                           </span>
-
                           <span className={isCurrent ? "font-medium text-amber-900" : "text-slate-700"}>
                             {description}
                           </span>
@@ -302,6 +288,10 @@ export default function OrderedLinearSearchPage({ onBack }) {
 
               <CardContent className="space-y-3">
                 <Badge>Confronti: {comparisonsCount}</Badge>
+                <br />
+                <Badge>
+                  Ultima posizione: {currentStep.posizione !== null ? currentStep.posizione : "-"}
+                </Badge>
               </CardContent>
             </Card>
           </div>

@@ -3,7 +3,7 @@ import { Play, Pause, RotateCcw, SkipForward, ArrowUpDown, ArrowLeft } from "luc
 import { Card, CardHeader, CardTitle, CardContent, Button, Input, Badge } from "../components/ui";
 import CodeSidebar from "../components/CodeSidebar";
 import Footer from "../components/Footer";
-import { parseVector } from "../algorithms/naiveSort";
+import { parseVector } from "../algorithms/parseVector";
 import {
   cppLinesBubbleSortWhile,
   bubbleSortWhileSteps,
@@ -89,7 +89,7 @@ export default function BubbleSortWhilePage({ onBack }) {
       <div className="flex-1 overflow-y-auto bg-slate-50 p-6">
         <div className="max-w-6xl mx-auto space-y-6">
           <div className="flex items-center justify-between gap-4">
-            <h1 className="text-3xl font-bold">Bubble sort con while</h1>
+            <h1 className="text-3xl font-bold">🫧 Bubble sort con while</h1>
 
             <Button variant="outline" onClick={onBack}>
               <ArrowLeft className="mr-2 h-4 w-4" />

@@ -11,9 +11,18 @@ import OrderedLinearSearchPage from "./pages/OrderedLinearSearchPage";
 import SelectionSortPage from "./pages/SelectionSortPage";
 import InsertionSortPage from "./pages/InsertionSortPage";
 import CompareSortPage from "./pages/CompareSortPage";
+import LastOccurrencePage from "./pages/LastOccurrencePage";
+import CountOccurrencesPage from "./pages/CountOccurrencesPage";
 
 export default function App() {
   const [page, setPage] = useState("home");
+
+  if (page === "last-occurrence") {
+    return <LastOccurrencePage onBack={() => setPage("home")} />;
+  }
+  if (page === "count-occurrences") {
+    return <CountOccurrencesPage onBack={() => setPage("home")} />;
+  }
 
   if (page === "ricerca-lineare-while") {
     return <LinearSearchWhilePage onBack={() => setPage("home")} />;

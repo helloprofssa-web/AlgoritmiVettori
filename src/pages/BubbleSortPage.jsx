@@ -4,7 +4,7 @@ import { Card, CardHeader, CardTitle, CardContent, Button, Input, Badge } from "
 import CodeSidebar from "../components/CodeSidebar";
 import Footer from "../components/Footer";
 import { cppLinesBubbleSort, bubbleSortSteps } from "../algorithms/bubbleSort";
-import { parseVector } from "../algorithms/naiveSort";
+import { parseVector } from "../algorithms/parseVector";
 
 export default function BubbleSortPage({ onBack }) {
   const [inputText, setInputText] = useState("7, 3, 9, 2, 5");
@@ -86,7 +86,7 @@ export default function BubbleSortPage({ onBack }) {
       <div className="flex-1 overflow-y-auto bg-slate-50 p-6">
         <div className="max-w-6xl mx-auto space-y-6">
           <div className="flex items-center justify-between gap-4">
-            <h1 className="text-3xl font-bold">Bubble sort</h1>
+            <h1 className="text-3xl font-bold">🫧 Bubble sort</h1>
 
             <Button variant="outline" onClick={onBack}>
               <ArrowLeft className="mr-2 h-4 w-4" />
@@ -98,7 +98,6 @@ export default function BubbleSortPage({ onBack }) {
             <Card className="xl:col-span-2">
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
-                  <ArrowUpDown className="h-5 w-5" />
                   Simulazione
                 </CardTitle>
               </CardHeader>

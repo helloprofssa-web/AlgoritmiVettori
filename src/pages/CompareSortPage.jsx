@@ -2,7 +2,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { Play, Pause, RotateCcw, SkipForward, ArrowLeft, ArrowUpDown } from "lucide-react";
 import { Card, CardHeader, CardTitle, CardContent, Button, Input, Badge } from "../components/ui";
 import Footer from "../components/Footer";
-import { parseVector } from "../algorithms/naiveSort";
+import { parseVector } from "../algorithms/parseVector";
 import { bubbleSortSteps } from "../algorithms/bubbleSort";
 import { selectionSortSteps } from "../algorithms/selectionSort";
 
